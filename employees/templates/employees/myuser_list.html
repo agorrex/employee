@@ -86,8 +86,9 @@
                         {% else %}
                         <th scope="row"></th>
                         {% endif %}
-
+                    </tr>
                         {% empty %}
+                    <tr>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -131,30 +132,6 @@
                         "bPaginate": false,
                         "scrollY": 400,
                         "scrollX": true,
-                        "columnDefs": [{
-                                        orderable: false,
-                                        className: 'select-checkbox',
-                                        targets: 0,
-                                    }],
-                        "select": {
-                                    "style": 'multi',
-                                    "selector": 'td:first-child',
-                                   },
-                        "dom": 'Bfrtip',
-                        "buttons": [
-                                  {
-                                      text: 'Select all',
-                                      action: function () {
-                                          table.rows().select();
-                                      }
-                                  },
-                                  {
-                                      text: 'Select none',
-                                      action: function () {
-                                          table.rows().deselect();
-                                      }
-                                  }
-                                ]
                                         } );
 
 
