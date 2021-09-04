@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+{% block head_title %} Customer || {{block.super}} {% endblock head_title %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Convert Numbers to Words
+        </div>
+        <div class="card-body">
+            <form id="numbers_form" method="POST" autocomplete="off" action="." enctype="multipart/form-data" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        {% csrf_token %}
+                        {% for field in form %}
+
+                        {% bootstrap_field field %}
+
+                        {% endfor %}
+
+                    </div>
+
+
+
+                </div>
+                <div class="row" style="padding=bottom:40px">
+                    <div class="col-md-6">
+                        <div><span>{{ in_words|title }}</span></div>
+                    </div>
+                </div>
+
+
+                {% buttons %}
+                <button type="submit" class="btn btn-dark">Submit</button>
+                <button type="reset" class="btn">Cancel</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+
+        $("#numbers_form").submit(function(e){
+        var flag = false;
+        var num = $("#id_enter_number").val();
+        console.log(num);
+        if(parseInt(num) < 0){
+          alert("the number is a negative integer!");
+          var flag = true;
+        }
+        if(parseFloat(num) % 1 !== 0 && parseFloat(num) !== NaN){
+         alert("the number is a decimal!");
+         var flag = true;
+        }
+        var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+        if(format.test(num)){
+         alert("no special characters allowed");
+         var flag = true;
+        }
+        if(flag){
+        e.preventDefault();
+        return false;
+        }
+        });
+    });
+</script>
+{% endblock content %}

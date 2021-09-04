@@ -1,0 +1,87 @@
+<div class="h-0 container-fluid">
+    <div class="h-0 row">
+        <div class="col-md-11" >
+    {% if is_paginated %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination float-right">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" onclick="setGetParameter('page',{{ page_obj.previous_page_number }});" >
+                    <span>Previous</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link">
+                    <span>Previous</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" onclick="setGetParameter('page',1);" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">begin</span>
+                </a>
+            </li>
+            {% endif %}
+
+
+            {% for pg in paginator.page_range %}
+            {% if page_obj.number == pg %}
+            <li class="page-item active"><a onclick="setGetParameter('page',{{pg}});" class="btn btn-default page-link">{{pg}}</a>
+            </li>
+            {% elif pg > page_obj.number|add:'-5' and pg < page_obj.number|add:'5' %}
+            <li class="page-item"><a onclick="setGetParameter('page',{{pg}});" class="btn page-link">{{pg}}</a></li>
+            {% endif %}
+            {% endfor %}
+
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" onclick="setGetParameter('page',{{ page_obj.paginator.num_pages }});" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">end</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" onclick="setGetParameter('page',{{ page_obj.next_page_number }});">
+                    <span>Next</span>
+                </a>
+            </li>
+            {% else %}
+            <li {% if not page_obj.has_next %} class="page-item disabled" {% endif %}>
+                <a class="page-link">
+                    <span>Next</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+            </div>
+              <div class="col-md-1 float-right">
+          <div class="form-group">
+    <select class="form-control per-page" name="paginate_by">
+        {%if per_page_list %}
+        {% for per_page in per_page_list %}
+        <option {% if request.GET.paginate_by == per_page %} selected {% endif %} value="{{per_page}}">{{per_page}}</option>
+        {% endfor %}
+        {% endif %}
+    </select>
+              </div>
+          </div>
+        </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".per-page").on("change", function () {
+            setGetParameter($(this)[0].name,$(this)[0].value,1);
+        });
+    });
+</script>

@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include "snippets/css.html" %}
+  <meta charset="UTF-8">
+  <title>{% block head_title %} Company ABC {% endblock head_title %}</title>
+  <link rel="icon" href="{% static 'favicon.png' %}" type="image/png" sizes="32x32">
+</head>
+<body>
+<div class="top-bar container-fluid mh-0">
+  <div class="row">
+    <div class="col-9">
+      <div class="page-header d-flex align-items-center">
+        <img class="logo img-fluid" src="{% static 'logo_60*49.png' %}" alt="Logo"/>
+        <h5 class="pl-2">Company ABC</h5>
+      </div>
+    </div>
+    <div class="col-3 d-inline-flex float-right corner-right">
+      <div class="d-inline p-2 w-10">{% include "snippets/profile_pic.html" %}</div>
+      <div class="d-inline p-2">{% include "snippets/profile_dropdown.html" %}</div>
+    </div>
+  </div>
+</div>
+{% include "snippets/nav.html" %}
+
+{% block content %}
+{% endblock content %}
+
+
+</body>
+<footer>
+  {% include "snippets/js.html" %}
+
+  {% block javascript %}
+  {% endblock javascript %}
+</footer>
+</html>

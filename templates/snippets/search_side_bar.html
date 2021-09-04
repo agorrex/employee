@@ -1,0 +1,37 @@
+{% load bootstrap4 %}
+<form method="GET" action="." novalidate>
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a>Search Tools</a>
+                </li>
+                {% for field in search_form %}
+                <li>
+                    {% if field.name == 'date_range' %}
+                    {% bootstrap_field field %}
+                    {% else %}
+                        {% bootstrap_field field show_label=False %}
+                    {% endif %}
+                    </li>
+                {% endfor %}
+                <li>
+                    <button class="btn btn-light" type="submit">Search</button>
+                </li>
+                <input type="hidden" name="paginate_by" {% if request.GET.paginate_by %} value="{{ request.GET.paginate_by }}" {% else %} value="5" {% endif %} >
+                <li class="mt-5"></li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+</form>
+
+<script>
+    $(function(){
+        $('.date-range').toggle();
+        $('#id_date_range').prop('checked', false);
+        $('#id_date_range').click(function(e){
+                $('.single-date').fadeOut(100).toggle();
+                $('.date-range').fadeOut(100).toggle();
+        });
+    });
+</script>

@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block head_title %} GTM Contacts Report || {{block.super}} {% endblock head_title %}
+{% load staticfiles %}
+{% block content %}
+<div id="wrapper">
+    {% include 'snippets/search_side_bar.html' %}
+    <div class="container-fluid">
+        <div id="page-content-wrapper">
+
+            <div class="drop-search row">
+                <div class="col-md-3">
+                    <div class="float-left">
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <a href='{% url "employees:add" %}'>
+                                    <i id="plus-icon" class="fa fa-plus-square btn btn-outline-dark">Add Employee</i></a>
+                                {% if request.GET.id == '' or request.GET.id%}
+                                <a href="{% url 'employees:list' %}?paginate_by={% if request.GET.paginate_by %}{{ request.GET.paginate_by }}{% else %}10{% endif %}"><button style="margin-left:7px;" class="btn btn-outline-dark">Clear Search</button></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="table-header d-flex justify-content-center"><h5>Employees</h5></div>
+            <!-- *********************************** Table start ************************************* -->
+            {% include 'snippets/pagination.html' %}
+            <div class="table-responsive">
+                <table id="example" class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col"><i class="fa fa-eye"></i></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for contacts in object_list %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'employees:detail' contacts.id %}">
+                                <i id="edit_icon" class="fa fa-eye"></i>
+                            </a>
+                            <a href="{% url 'employees:edit' contacts.id %}">
+                                <i id="edit_icon" class="fa fa-edit"></i>
+                            </a>
+                            <a href="{% url 'employees:delete' contacts.id %}">
+                                <i id="delete_icon" class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                        <th scope="row">{{ contacts.id }}</th>
+
+
+                        {% if contacts.full_name %}
+                        <td>{{ contacts.full_name }}</td>
+                        {% else %}
+                        <th scope="row"></th>
+                        {% endif %}
+
+
+                        {% if contacts.phone %}
+                        <td>{{ contacts.phone }}</td>
+                        {% else %}
+                        <th scope="row"></th>
+                        {% endif %}
+
+                        {% if contacts.email %}
+                        <td>{{ contacts.email }}</td>
+                        {% else %}
+                        <th scope="row"></th>
+                        {% endif %}
+
+
+                        {% if contacts.address %}
+                        <td>{{ contacts.address }}</td>
+                        {% else %}
+                        <th scope="row"></th>
+                        {% endif %}
+
+                        {% if contacts.place %}
+                        <td>{{ contacts.place }}</td>
+                        {% else %}
+                        <th scope="row"></th>
+                        {% endif %}
+
+                        {% empty %}
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><h3>Totally Empty</h3></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th scope="col"><i class="fa fa-eye"></i></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Full Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% include 'snippets/pagination.html' %}
+        </div>
+    </div>
+</div>
+<!-- *********************************** Table End ************************************* -->
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="{% static 'table_functions.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        var id_list = new Array();
+        var table = $('#example').DataTable( {
+                        "bFilter": false,
+                        "bInfo": false,
+                        "bPaginate": false,
+                        "scrollY": 400,
+                        "scrollX": true,
+                        "columnDefs": [{
+                                        orderable: false,
+                                        className: 'select-checkbox',
+                                        targets: 0,
+                                    }],
+                        "select": {
+                                    "style": 'multi',
+                                    "selector": 'td:first-child',
+                                   },
+                        "dom": 'Bfrtip',
+                        "buttons": [
+                                  {
+                                      text: 'Select all',
+                                      action: function () {
+                                          table.rows().select();
+                                      }
+                                  },
+                                  {
+                                      text: 'Select none',
+                                      action: function () {
+                                          table.rows().deselect();
+                                      }
+                                  }
+                                ]
+                                        } );
+
+
+
+         table
+            .on( 'select', function ( e, dt, type, indexes ) {
+                var rowData = table.rows( indexes ).data().toArray();
+                makeIdList(id_list ,rowData, 'select_all');
+            } )
+            .on( 'deselect', function ( e, dt, type, indexes ) {
+                var rowData = table.rows( indexes ).data().toArray();
+                makeIdList(id_list, rowData, 'remove');
+            } );
+
+    var delete_url = '{# url 'employees:contacts-bulk-delete' #}';
+    var export_url = '{# url 'employees:export-contacts' #}';
+
+    $("#delete_button").click(function(e) {
+        e.preventDefault();
+        deleteSelectedObjects(delete_url, id_list);
+    });
+
+    $("#export_button").click(function(e) {
+        e.preventDefault();
+        exportSelectedObjects(export_url, id_list);
+    });
+
+    } );
+</script>
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+{% endblock javascript %}

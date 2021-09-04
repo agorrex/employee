@@ -1,0 +1,34 @@
+{% extends "No_Nav_Home.html" %}
+{% load bootstrap4 %}
+{% block head_title %} Login || {{block.super}} {% endblock head_title %}
+{% block content %}
+<div class="container">
+    <div class="card mx-auto" style="width:40%">
+        <div class="card-header">
+            Login Here
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li
+                    {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="card-body">
+            <form method="POST" action="." novalidate>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        {% buttons %}
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                        {% endbuttons %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

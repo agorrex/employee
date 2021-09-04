@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% load staticfiles %}
+{% block head_title %} Customer || {{block.super}} {% endblock head_title %}
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      Employees Form
+    </div>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li
+              {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card-body">
+      <form method="POST" autocomplete="off" action="." enctype="multipart/form-data" novalidate>
+        <div class="row">
+          <div class="col-md-6">
+            {% csrf_token %}
+            {% for field in form %}
+
+            {% bootstrap_field field  %}
+
+            {% endfor %}
+
+            {% buttons %}
+            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="reset" class="btn">Cancel</button>
+            {% endbuttons %}
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

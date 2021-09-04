@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "snippets/css.html" %}
+    <meta charset="UTF-8">
+    <title>{% block head_title %} Company ABC {% endblock head_title %}</title>
+</head>
+<body>
+<div class="top-bar container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="text-center page-header">
+                <h3>Company ABC</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block content %}
+{% endblock content %}
+</body>
+<footer>
+    {% include "snippets/js.html" %}
+</footer>
+</html>

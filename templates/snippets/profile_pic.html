@@ -1,0 +1,6 @@
+{% load staticfiles %}
+{% if request.user.avatar %}
+<img src="{{ request.user.avatar.url }}" class="rounded float-right profile-pic" alt="profile pic">
+{% else %}
+<img src="{% static 'pro_pic.jpg' %}" class="rounded float-right profile-pic" alt="profile pic">
+{% endif %}
