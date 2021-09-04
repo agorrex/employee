@@ -52,39 +52,39 @@
                                 <i id="delete_icon" class="fa fa-trash"></i>
                             </a>
                         </td>
-                        <th scope="row">{{ contacts.id }}</th>
+                        <td scope="row">{{ contacts.id }}</td>
 
 
                         {% if contacts.full_name %}
                         <td>{{ contacts.full_name }}</td>
                         {% else %}
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         {% endif %}
 
 
                         {% if contacts.phone %}
                         <td>{{ contacts.phone }}</td>
                         {% else %}
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         {% endif %}
 
                         {% if contacts.email %}
                         <td>{{ contacts.email }}</td>
                         {% else %}
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         {% endif %}
 
 
                         {% if contacts.address %}
                         <td>{{ contacts.address }}</td>
                         {% else %}
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         {% endif %}
 
                         {% if contacts.place %}
                         <td>{{ contacts.place }}</td>
                         {% else %}
-                        <th scope="row"></th>
+                        <td scope="row"></td>
                         {% endif %}
                     </tr>
                         {% empty %}
@@ -136,15 +136,6 @@
 
 
 
-         table
-            .on( 'select', function ( e, dt, type, indexes ) {
-                var rowData = table.rows( indexes ).data().toArray();
-                makeIdList(id_list ,rowData, 'select_all');
-            } )
-            .on( 'deselect', function ( e, dt, type, indexes ) {
-                var rowData = table.rows( indexes ).data().toArray();
-                makeIdList(id_list, rowData, 'remove');
-            } );
 
     var delete_url = '{# url 'employees:contacts-bulk-delete' #}';
     var export_url = '{# url 'employees:export-contacts' #}';

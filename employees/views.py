@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.urls import reverse_lazy
@@ -60,7 +59,8 @@ class EmployeeCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         if form.is_valid():
             response = super(EmployeeCreateView, self).form_valid(form)
-            password = self.request.POST.get('password', None)
+            password = self.request.form.get('password', None)
+            print(password)
             if password:
                 self.object.set_password(password)
             if 'profile_pic' in self.request.FILES:
@@ -84,14 +84,17 @@ class EmployeeEditView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('employees:list')
 
     def form_valid(self, form):
+        user_id = self.kwargs.get('pk')
+        if user_id:
+            employee = get_object_or_404(User, pk=user_id)
+            old_password = employee.password
         if form.is_valid():
             response = super(EmployeeEditView, self).form_valid(form)
-            password = self.request.POST.get('password', None)
-            email = self.request.POST.get('email', None)
+            password = form.cleaned_data.get('password')
             if password:
                 self.object.set_password(password)
-            if email:
-                self.object.username = email
+            else:
+                self.object.password = old_password
             if 'profile_pic' in self.request.FILES:
                 image = self.request.FILES['profile_pic']
                 encoded_string = base64.b64encode(image.read())
