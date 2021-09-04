@@ -8,8 +8,8 @@ class MyUserForm(forms.ModelForm):
 
     address = forms.CharField(widget=forms.Textarea, required=False)
     profile_pic = forms.ImageField(label="Profile Picture", required=False)
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    confirm = forms.CharField(widget=forms.PasswordInput, required=True)
 
     def clean(self):
         cleaned_data = super(MyUserForm, self).clean()

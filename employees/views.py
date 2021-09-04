@@ -59,8 +59,7 @@ class EmployeeCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         if form.is_valid():
             response = super(EmployeeCreateView, self).form_valid(form)
-            password = self.request.form.get('password', None)
-            print(password)
+            password = form.cleaned_data.get('password')
             if password:
                 self.object.set_password(password)
             if 'profile_pic' in self.request.FILES:
