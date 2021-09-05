@@ -129,11 +129,11 @@ padding-top:3%;
 
 #plus-icon{
 color: #343a40;
-font-size:1.5em;
+//font-size:1.5em;
 }
 #plus-icon:hover{
 color: #fff;
-font-size:1.5em;
+//font-size:1.5em;
 }
 a:hover < #plus-icon{
 color: #fff;
